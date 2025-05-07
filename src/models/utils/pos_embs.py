@@ -95,5 +95,6 @@ def get_1d_sincos_pos_embed_from_grid(embed_dim, pos):
     emb_sin = np.sin(out)  # (M, D/2)
     emb_cos = np.cos(out)  # (M, D/2)
 
-    emb = np.concatenate([emb_sin, emb_cos], axis=1)  # (M, D)
+    emb = np.stack((emb_sin, emb_cos), axis=-1) # intertwined sin and cos
+    emb = emb.reshape(*emb.shape[:-2], -1)      # flatten last dimension (M, D)
     return emb
